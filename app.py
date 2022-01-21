@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-from spicy import sparse
+from scipy import sparse
 from flask import Flask, render_template, request
 
-ratings = pd.read_csv('dataset.csv')
+ratings = pd.read_csv('data_wisata.csv')
 
 userRatings = ratings.pivot_table(index=['User_id'],columns=['Nama_wisata'],values='Rating')
 
@@ -28,12 +28,12 @@ def home():
 
 @app.route("/predict", methods = ['POST'])
 def predict():
-        wisata = request.form['wisata']
-        rating = int(request.form['rating'])
-        rekomendasi = get_similar(wisata, rating)
-        rekomendasi = list(rekomendasi[1:6].index)
+    wisata = request.form['wisata']
+    rating = int(request.form['rating'])
+    rekomendasi = get_similar(wisata, rating)
+    rekomendasi = list(rekomendasi[1:6].index)
         
-        return render_template(home.html, output=rekomendasi)
+    return render_template('home.html', output=rekomendasi)
         
     
 if __name__ == "__main__":
