@@ -30,7 +30,6 @@ def home():
 def predict():
         wisata = request.form['wisata']
         rating = int(request.form['rating'])
-        arr = np.arr([[wisata, rating]])
         rekomendasi = get_similar(wisata, rating)
         rekomendasi = list(rekomendasi[1:6].index)
         
