@@ -1,6 +1,24 @@
-from flask import Flask, render_template, request
 import numpy as np
+import pandas as pd
+from spicy import sparse
+from flask import Flask, render_template, request
 
+ratings = pd.read_csv('dataset.csv')
+
+userRatings = ratings.pivot_table(index=['User_id'],columns=['Nama_wisata'],values='Rating')
+
+userRatings = userRatings.dropna(thresh=10).fillna(0)
+
+corrMatrix = userRatings.corr(method='spearman')
+
+#Fungsi untuk membuat list rekomendasi
+def get_similar(Genre,Rating):
+    similar_ratings = corrMatrix[Genre]*(Rating-2.5)
+    similar_ratings = similar_ratings.sort_values(ascending=False)
+    #print(type(similar_ratings))
+    return similar_ratings
+
+#Deployment    
 app = Flask(__name__)
 
 
@@ -10,12 +28,13 @@ def home():
 
 @app.route("/predict", methods = ['POST'])
 def predict():
-    if request.method == 'POST':
         wisata = request.form['wisata']
-        rating = request.form['rating']
+        rating = int(request.form['rating'])
         arr = np.arr([[wisata, rating]])
-        pred = model.predict(arr)
-        return render_template('home.html', data=pred)
+        rekomendasi = get_similar(wisata, rating)
+        rekomendasi = list(rekomendasi[1:6].index)
+        
+        return render_template(home.html, output=rekomendasi)
         
     
 if __name__ == "__main__":
