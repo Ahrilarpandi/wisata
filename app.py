@@ -3,7 +3,7 @@ import pandas as pd
 from scipy import sparse
 from flask import Flask, render_template, request
 
-ratings = pd.read_csv('data_wisata.csv')
+ratings = pd.read_csv('dataset.csv')
 
 userRatings = ratings.pivot_table(index=['User_id'],columns=['Nama_wisata'],values='Rating')
 
