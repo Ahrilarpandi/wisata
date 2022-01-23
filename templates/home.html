@@ -131,15 +131,18 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <table>
-                        {% for item in output %}
-                        <tr>
-                            <td>{{ item }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-
+                                <div class="row table-primary">
+                    <div class="col table-hover">
+                        <center>
+                            <table>
+                                {% for item in output %}
+                                <tr>
+                                    <td>{{ item }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </center>
+                    </div>
                 </div>
             </div>
         </section>
